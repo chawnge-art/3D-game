@@ -1,0 +1,57 @@
+body {
+  background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.game {
+  margin-top: 40px;
+}
+
+h1 {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.slots {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.slot {
+  width: 80px;
+  height: 80px;
+  background: black;
+  margin: 0 10px;
+  font-size: 40px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 18px;
+  margin: 10px;
+  background: #00ffff;
+  border: none;
+  border-radius: 5px;
+}
+
+select {
+  padding: 8px;
+  font-size: 16px;
+}
+
+@keyframes spinAnim {
+  0% { transform: rotateX(0deg); }
+  100% { transform: rotateX(360deg); }
+}
+
+.spinning {
+  animation: spinAnim 0.5s linear infinite;
+}

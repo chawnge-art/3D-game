@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neon Slots</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#00ffff">
+
+  <!-- MANIFEST -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="game">
+  <h1>🎰 NEON SLOTS</h1>
+
+  <p>💰 Coins: <span id="coins">1000</span></p>
+
+  <select id="bet">
+    <option value="50">Bet 50</option>
+    <option value="100">Bet 100</option>
+    <option value="200">Bet 200</option>
+  </select>
+
+  <div class="slots">
+    <div class="slot" id="s1">🍒</div>
+    <div class="slot" id="s2">🍋</div>
+    <div class="slot" id="s3">🍉</div>
+  </div>
+
+  <button onclick="spin()">SPIN</button>
+  <button id="installBtn" style="display:none">📲 INSTALL APP</button>
+
+  <p id="result"></p>
+</div>
+
+<audio id="spinSound" src="sounds/spin.mp3"></audio>
+<audio id="winSound" src="sounds/win.mp3"></audio>
+
+<script src="script.js"></script>
+
+<script>
+  // REGISTER SERVICE WORKER
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+
+  let deferredPrompt;
+  const installBtn = document.getElementById("installBtn");
+
+  // INSTALL PROMPT
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "inline-block";
+  });
+
+  installBtn.addEventListener("click", () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        installBtn.style.display = "none";
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

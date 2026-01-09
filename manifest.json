@@ -1,0 +1,81 @@
+const symbols = ["🍒", "🍋", "🍉", "⭐", "🔔"];
+
+let coins = localStorage.getItem("coins")
+  ? parseInt(localStorage.getItem("coins"))
+  : 1000;
+
+updateCoins();
+dailyBonus();
+
+function spin() {
+  const bet = parseInt(document.getElementById("bet").value);
+  const result = document.getElementById("result");
+  const spinSound = document.getElementById("spinSound");
+  const winSound = document.getElementById("winSound");
+  const lostSound = document.getElementById("lostSound");
+  const jackpotSound = document.getElementById("jackpotSound");
+
+  if (coins < bet) {
+    result.innerText = "❌ Not enough coins!";
+    return;
+  }
+
+  coins -= bet;
+  updateCoins();
+  spinSound.play();
+
+  ["s1","s2","s3","s4","s5"].forEach(id =>
+    document.getElementById(id).classList.add("spinning")
+  );
+
+  setTimeout(() => {
+    ["s1","s2","s3","s4","s5"].forEach(id =>
+      document.getElementById(id).classList.remove("spinning")
+    );
+
+    const s1 = rand();
+    const s2 = rand();
+    const s3 = rand();
+    const s4 = rand();
+    const s5 = rand();
+
+    document.getElementById("s1").innerText = s1;
+    document.getElementById("s2").innerText = s2;
+    document.getElementById("s3").innerText = s3;
+    document.getElementById("s4").innerText = s4;
+    document.getElementById("s5").innerText = s5;
+
+    if (s1 === s2 && s2 === s3 && s3 === s4 && s4 === s5) {
+      coins += bet * 5;
+      result.innerText = "🎉 JACKPOT!";
+      winSound.play();
+    } else if (s1 === s2 || s2 === s3 || s1 === s3 || s3 === s4 || s4 === s5) {
+      coins += bet * 2;
+      result.innerText = "✨ YOU WIN!";
+      winSound.play();
+    } else {
+      result.innerText = "😢 LOST";
+    }
+
+    localStorage.setItem("coins", coins);
+    updateCoins();
+  }, 1000);
+}
+
+function rand() {
+  return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+function updateCoins() {
+  document.getElementById("coins").innerText = coins;
+}
+
+function dailyBonus() {
+  const today = new Date().toDateString();
+  if (localStorage.getItem("bonus") !== today) {
+    coins += 300;
+    localStorage.setItem("bonus", today);
+    localStorage.setItem("coins", coins);
+    alert("🎁 Daily Bonus +300 Coins");
+  }
+}
